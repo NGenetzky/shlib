@@ -1,3 +1,4 @@
+#!/bin/bash
 
 declare_f_extdebug()
 {
@@ -10,4 +11,3 @@ declare_f_extdebug()
     # Turn off extended shell debugging
     shopt -u extdebug
 }
-

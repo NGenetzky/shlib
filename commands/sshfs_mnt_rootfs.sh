@@ -1,3 +1,4 @@
+#!/bin/sh
 
 sshfs_mnt_rootfs()
 {
@@ -14,4 +15,3 @@ sshfs_mnt_rootfs()
     sshfs "root@${ip}:/" "${mnt_path}"
     return $?
 }
-

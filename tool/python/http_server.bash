@@ -1,3 +1,5 @@
+#!/bin/sh
+
 http_server(){
   # Static:
   # local pymodule='http.server'
