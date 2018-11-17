@@ -1,7 +1,7 @@
 #!/bin/bash
 
 SCRIPTDIR="$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd -P)"
-GITROOT="$(readlink -f ${SCRIPTDIR}/../)"
+GITROOT="$(readlink -f "${SCRIPTDIR}/../")"
 
 main(){
   local args=$@
