@@ -1,3 +1,4 @@
+#!/bin/sh
 
 kermit_ttyusb()
 {
@@ -5,4 +6,3 @@ kermit_ttyusb()
     baud="${2-115200}"
     kermit -l "${dev}" -b "${baud}" -c
 }
-

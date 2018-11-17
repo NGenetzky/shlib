@@ -1,3 +1,4 @@
+#!/bin/bash
 
 declare_f_extdebug()
 {
@@ -6,8 +7,7 @@ declare_f_extdebug()
     # Turn on extended shell debugging
     shopt -s extdebug
     # Display the function’s name, line number and fully qualified source file
-    declare -F ${1?"1:Specify name of function"}
+    declare -F "${1?'Specify name of function'}"
     # Turn off extended shell debugging
     shopt -u extdebug
 }
-

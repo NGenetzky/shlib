@@ -1,8 +1,9 @@
+#!/bin/sh
 
 sshfs_mnt_sitepackages()
 {
-    local ip=${1?'Specify the IP of the device'}
-    local mnt_path="/mnt/site-packages-${ip?}/"
+    ip=${1?'Specify the IP of the device'}
+    mnt_path="/mnt/site-packages-${ip?}/"
 
     # return success if already mounted.
     mountpoint -q "${mnt_path}" && return 0
@@ -14,4 +15,3 @@ sshfs_mnt_sitepackages()
     sshfs "root@${ip}:/usr/lib/python2.7/site-packages/" "${mnt_path}"
     return $?
 }
-

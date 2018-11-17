@@ -1,10 +1,15 @@
 #!/bin/bash
 
 SCRIPTDIR="$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd -P)"
+GITROOT="$(readlink -f "${SCRIPTDIR}/../")"
 
 main(){
-  local args="$*"
-  echo "${args} inside of ${SCRIPTDIR}"
+  (
+    cd "${GITROOT}"
+    find ./* \
+      \( -iname '*.bash' -or -iname '*.sh' \) \
+      -exec shellcheck "$@" {} +
+  )
 }
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then

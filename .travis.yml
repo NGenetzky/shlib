@@ -1,0 +1,5 @@
+sudo: required
+dist: trusty
+language: bash
+script:
+- scripts/test-shellcheck.bash
