@@ -1,7 +1,6 @@
 #!/bin/sh
 
 http_server(){
-  local pymodule
   # Static:
   #pymodule='http.server'
   #pymodule='SimpleHTTPServer'

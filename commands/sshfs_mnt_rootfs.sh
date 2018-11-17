@@ -2,8 +2,8 @@
 
 sshfs_mnt_rootfs()
 {
-    local ip=${1?'Specify the IP of the device'}
-    local mnt_path="/mnt/${ip?}/"
+    ip=${1?'Specify the IP of the device'}
+    mnt_path="/mnt/${ip?}/"
 
     # return success if already mounted.
     mountpoint -q "${mnt_path}" && return 0
