@@ -4,11 +4,11 @@ SCRIPTDIR="$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd -P)"
 GITROOT="$(readlink -f "${SCRIPTDIR}/../")"
 
 main(){
-  local args=$@
   (
     cd "${GITROOT}"
-    local files="$(find * -iname '*.bash' -or -iname '*.sh')"
-    shellcheck ${files}
+    find ./* \
+      \( -iname '*.bash' -or -iname '*.sh' \) \
+      -exec shellcheck "$@" {} +
   )
 }
 
