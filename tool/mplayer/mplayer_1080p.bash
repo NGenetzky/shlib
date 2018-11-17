@@ -2,7 +2,7 @@
 
 mplayer_1080p()
 {
-  mplayer tv:// -tv driver=v4l2:width=1920:height=1080:device=/dev/video0 $@
+  mplayer tv:// -tv driver=v4l2:width=1920:height=1080:device=/dev/video0 "$@"
 }
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
