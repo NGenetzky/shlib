@@ -9,8 +9,8 @@ function ssh_copy_id_from_github () {
     prevkeys="${sshdir}/authorized_keys.backup"
     ghkeyfile="${sshdir}/authorized_keys_github.${ghusername}.keys.pub"
 
-    [ -d ${sshdir} ] || mkdir -m 700 -p "${sshdir}"
-    [ -f ${authkeys} ] || touch "${authkeys}"
+    [ -d "${sshdir}" ] || mkdir -m 700 "${sshdir}"
+    [ -f "${authkeys}" ] || touch "${authkeys}"
     chmod 600 "${authkeys}"
 
     curl -s "https://github.com/$ghusername.keys" > "${ghkeyfile}"
