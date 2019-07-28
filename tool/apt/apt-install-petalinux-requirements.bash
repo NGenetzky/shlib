@@ -1,3 +1,4 @@
+#!/bin/bash
 sudo apt-get install -y \
     gcc git make net-tools libncurses5-dev tftpd zlib1g-dev libssl-dev flex \
     bison libselinux1 gnupg wget diffstat chrpath socat xterm autoconf libtool \
