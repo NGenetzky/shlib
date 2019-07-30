@@ -26,7 +26,7 @@ wget_download_dpkg_install(){
 
     local path="${DL_DIR}/${name}"
     wget -O "${path}" "${url}"
-    echo -e 'May need to fix broken packages using:\nsudo apt-get install -f'
     sudo dpkg --install "${path}"
+    sudo apt-get install --fix-broken
 }
 
