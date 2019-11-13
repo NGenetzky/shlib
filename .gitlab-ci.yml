@@ -1,0 +1,6 @@
+test-shellcheck:
+  stage: test
+  image: ubuntu:18.04
+  script:
+  - apt-get update && apt-get install shellcheck
+  - scripts/test-shellcheck.bash
