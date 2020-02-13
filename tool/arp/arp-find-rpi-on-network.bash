@@ -1,4 +1,8 @@
 #!/bin/bash
+#
+# Command 'arp' not found, but can be installed with:
+#
+# sudo apt install net-tools
 
 # https://raspberrypi.stackexchange.com/users/6837/mrded
 # https://raspberrypi.stackexchange.com/a/34594
