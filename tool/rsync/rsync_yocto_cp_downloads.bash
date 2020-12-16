@@ -18,7 +18,9 @@ rsync_yocto_cp_downloads(){
   # -i, --itemize-changes       output a change-summary for all updates
   # -c, --checksum              skip based on checksum, not mod-time & size
   # --remove-source-files   sender removes synchronized files (non-dir
-  rsync -aSu \
+  # -L, --copy-links            transform symlink into referent file/dir
+  # -H, --hard-links            preserve hard links
+  rsync -aSuLH \
     "$@" \
     \
     --exclude "git2/" \
