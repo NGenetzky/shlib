@@ -23,7 +23,7 @@ rsync_yocto_mv_downloads(){
     --remove-source-files \
     \
     --exclude "git2/" \
-    --exclude ".git/" \
+    --exclude ".*/" \
     \
     --include "*/" \
     \

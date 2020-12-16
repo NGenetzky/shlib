@@ -22,7 +22,7 @@ rsync_yocto_cp_downloads(){
     "$@" \
     \
     --exclude "git2/" \
-    --exclude ".git/" \
+    --exclude ".*/" \
     \
     --include "*/" \
     \
