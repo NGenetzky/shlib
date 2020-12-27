@@ -43,44 +43,65 @@ die() {
 
 parse_params() {
   # default values of variables set from params
-  flag=0
-  param=''
+  # flag=0
+  # param=''
 
   while :; do
     case "${1-}" in
     -h | --help) usage ;;
     -v | --verbose) set -x ;;
     --no-color) NO_COLOR=1 ;;
-    -f | --flag) flag=1 ;; # example flag
-    -p | --param) # example named parameter
-      param="${2-}"
-      shift
-      ;;
+    # -f | --flag) flag=1 ;; # example flag
+    # -p | --param) # example named parameter
+    #   param="${2-}"
+    #   shift
+    #   ;;
     -?*) die "Unknown option: $1" ;;
     *) break ;;
     esac
     shift
   done
 
-  args=("$@")
+  # args=("$@")
 
   # check required params and arguments
-  [[ -z "${param-}" ]] && die "Missing required parameter: param"
-  [[ ${#args[@]} -eq 0 ]] && die "Missing script arguments"
+  # [[ -z "${param-}" ]] && die "Missing required parameter: param"
+  # [[ ${#args[@]} -eq 0 ]] && die "Missing script arguments"
+
+  # msg "${RED}Read parameters:${NOFORMAT}"
+  # msg "- flag: ${flag}"
+  # msg "- param: ${param}"
+  # msg "- arguments: ${args[*]-}"
 
   return 0
+}
+
+
+_sha1sum_check(){
+  # _sha1sum_check 'sha1sum' 'filepath'
+  echo "${1}  ${2}" | sha1sum --check --quiet
+}
+
+_gitlab_runner_download(){
+  dest="${1-gitlab-runner}"
+  version="13.7.0"
+  sha1sum='41668a8c2e5414810129cb37f5ef94c588083fd2'
+
+  if [ -x "$dest" ]; then
+    return 0
+  fi
+  curl -L --output "$dest" \
+    "https://gitlab-runner-downloads.s3.amazonaws.com/${version}/binaries/gitlab-runner-linux-amd64"
+  chmod +x "${dest}"
+  _sha1sum_check "${sha1sum}" "${dest}" || die 'FAILED sha1sum_check'
 }
 
 main(){
   parse_params "$@"
   setup_colors
 
-  # TODO: script logic here
-
-  msg "${RED}Read parameters:${NOFORMAT}"
-  msg "- flag: ${flag}"
-  msg "- param: ${param}"
-  msg "- arguments: ${args[*]-}"
+  f_exec='gitlab-runner'
+  _gitlab_runner_download "$f_exec"
 }
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
