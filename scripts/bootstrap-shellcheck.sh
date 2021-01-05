@@ -1,2 +1,5 @@
 #!/bin/sh
-apt-get install shellcheck
+if ! command -v shellcheck > /dev/null ; then
+    apt-get update && \
+    apt-get install shellcheck
+fi
