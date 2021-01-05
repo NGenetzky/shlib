@@ -41,28 +41,22 @@ die() {
   exit "$code"
 }
 
-parse_env(){
-    CONFIG_FILE="${CONFIG_FILE-config.toml}"
-    REGISTRATION_TOKEN="${REGISTRATION_TOKEN-}"
-    RUNNER_NAME="${RUNNER_NAME-}"
-    CI_SERVER_URL="${CI_SERVER_URL-https://gitlab.com/}"
-
-    RUNNER_TAG_LIST="${RUNNER_TAG_LIST-shell}"
-
-    RUNNER_BUILDS_DIR="${RUNNER_BUILDS_DIR-builds}"
-    RUNNER_CACHE_DIR="${RUNNER_CACHE_DIR-cache}"
-
-    # RUNNER_PRE_CLONE_SCRIPT="${RUNNER_PRE_CLONE_SCRIPT-}"
-    # RUNNER_PRE_BUILD_SCRIPT="${RUNNER_PRE_BUILD_SCRIPT-}"
-    # RUNNER_POST_BUILD_SCRIPT="${RUNNER_POST_BUILD_SCRIPT-}"
-
-    RUNNER_EXECUTOR="${RUNNER_EXECUTOR-shell}"
-}
-
 parse_params() {
-  # default values of variables set from params
-  # flag=0
-  # param=''
+  CONFIG_FILE="${CONFIG_FILE-config.toml}"
+  REGISTRATION_TOKEN="${REGISTRATION_TOKEN-}"
+  RUNNER_NAME="${RUNNER_NAME-}"
+  CI_SERVER_URL="${CI_SERVER_URL-https://gitlab.com/}"
+
+  RUNNER_TAG_LIST="${RUNNER_TAG_LIST-shell}"
+
+  RUNNER_BUILDS_DIR="${RUNNER_BUILDS_DIR-builds}"
+  RUNNER_CACHE_DIR="${RUNNER_CACHE_DIR-cache}"
+
+  # RUNNER_PRE_CLONE_SCRIPT="${RUNNER_PRE_CLONE_SCRIPT-}"
+  # RUNNER_PRE_BUILD_SCRIPT="${RUNNER_PRE_BUILD_SCRIPT-}"
+  # RUNNER_POST_BUILD_SCRIPT="${RUNNER_POST_BUILD_SCRIPT-}"
+
+  RUNNER_EXECUTOR="${RUNNER_EXECUTOR-shell}"
 
   while :; do
     case "${1-}" in
@@ -135,7 +129,7 @@ gitlab_runner_exec(){
         "$@"
 }
 
-gitlab_runner_run(){
+do_register(){
   # --access-level="not_protected"
   # --debug-trace-disabled='true'
   gitlab_runner_exec register \
@@ -148,12 +142,11 @@ gitlab_runner_run(){
 
 
 main(){
-  parse_env
   parse_params "$@"
   setup_colors
 
   # _gitlab_runner_download "./gitlab-runner"
-  gitlab_runner_run
+  do_register
 }
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
