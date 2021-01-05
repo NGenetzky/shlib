@@ -41,6 +41,24 @@ die() {
   exit "$code"
 }
 
+parse_env(){
+    CONFIG_FILE="${CONFIG_FILE-config.toml}"
+    REGISTRATION_TOKEN="${REGISTRATION_TOKEN-}"
+    RUNNER_NAME="${RUNNER_NAME-}"
+    CI_SERVER_URL="${CI_SERVER_URL-https://gitlab.com/}"
+
+    RUNNER_TAG_LIST="${RUNNER_TAG_LIST-shell}"
+
+    RUNNER_BUILDS_DIR="${RUNNER_BUILDS_DIR-builds}"
+    RUNNER_CACHE_DIR="${RUNNER_CACHE_DIR-cache}"
+
+    # RUNNER_PRE_CLONE_SCRIPT="${RUNNER_PRE_CLONE_SCRIPT-}"
+    # RUNNER_PRE_BUILD_SCRIPT="${RUNNER_PRE_BUILD_SCRIPT-}"
+    # RUNNER_POST_BUILD_SCRIPT="${RUNNER_POST_BUILD_SCRIPT-}"
+
+    RUNNER_EXECUTOR="${RUNNER_EXECUTOR-shell}"
+}
+
 parse_params() {
   # default values of variables set from params
   # flag=0
@@ -51,7 +69,7 @@ parse_params() {
     -h | --help) usage ;;
     -v | --verbose) set -x ;;
     --no-color) NO_COLOR=1 ;;
-    # -f | --flag) flag=1 ;; # example flag
+    -r | --reqistration-token) REGISTRATION_TOKEN="${2-}" ; shift ;;
     # -p | --param) # example named parameter
     #   param="${2-}"
     #   shift
@@ -65,14 +83,24 @@ parse_params() {
   # args=("$@")
 
   # check required params and arguments
-  # [[ -z "${param-}" ]] && die "Missing required parameter: param"
+  [[ -z "${REGISTRATION_TOKEN-}" ]] && die "Missing required parameter: REGISTRATION_TOKEN"
   # [[ ${#args[@]} -eq 0 ]] && die "Missing script arguments"
 
-  # msg "${RED}Read parameters:${NOFORMAT}"
-  # msg "- flag: ${flag}"
-  # msg "- param: ${param}"
-  # msg "- arguments: ${args[*]-}"
+  if [ -z "${RUNNER_NAME-}" ]; then
+    RUNNER_NAME="$(hostname)-${RUNNER_EXECUTOR}"
+  fi
 
+  export \
+    CONFIG_FILE \
+    REGISTRATION_TOKEN \
+    RUNNER_BUILDS_DIR \
+    RUNNER_CACHE_DIR \
+    RUNNER_EXECUTOR \
+    RUNNER_NAME \
+    RUNNER_POST_BUILD_SCRIPT \
+    RUNNER_PRE_BUILD_SCRIPT \
+    RUNNER_PRE_CLONE_SCRIPT \
+    RUNNER_TAG_LIST
   return 0
 }
 
@@ -96,12 +124,36 @@ _gitlab_runner_download(){
   _sha1sum_check "${sha1sum}" "${dest}" || die 'FAILED sha1sum_check'
 }
 
+gitlab_runner_exec(){
+    # --debug                      debug mode [$DEBUG]
+    # --log-format value           Choose log format (options: runner, text, json) [$LOG_FORMAT]
+    # --log-level value, -l value  Log level (options: debug, info, warn, error, fatal, panic) [$LOG_LEVEL]
+    # --log-format 'text'
+    # ./gitlab-runner \
+    gitlab-runner \
+        --log-level 'debug' \
+        "$@"
+}
+
+gitlab_runner_run(){
+  # --access-level="not_protected"
+  # --debug-trace-disabled='true'
+  gitlab_runner_exec register \
+      --non-interactive \
+      --run-untagged="false" \
+      --locked='true' \
+      --name "${RUNNER_NAME}" \
+      --url "${CI_SERVER_URL}"
+}
+
+
 main(){
+  parse_env
   parse_params "$@"
   setup_colors
 
-  f_exec='gitlab-runner'
-  _gitlab_runner_download "$f_exec"
+  # _gitlab_runner_download "./gitlab-runner"
+  gitlab_runner_run
 }
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
