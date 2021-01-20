@@ -99,7 +99,7 @@ if [ "${_SCRIPT_EXECUTED}" ]; then
   set -eu
   trap cleanup INT TERM EXIT
 
-  # shellcheck disable=SC2034 # unused
+  # shellcheck disable=SC2034
   SCRIPTDIR="$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd -P)"
 
   main "$@"

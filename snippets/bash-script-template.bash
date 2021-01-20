@@ -87,7 +87,7 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
   set -Eeuo pipefail
   trap cleanup SIGINT SIGTERM ERR EXIT
 
-  # shellcheck disable=SC2034 # unused
+  # shellcheck disable=SC2034
   SCRIPTDIR="$(CDPATH='' cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
 
   main "$@"
