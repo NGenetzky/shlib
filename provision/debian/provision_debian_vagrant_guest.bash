@@ -26,7 +26,7 @@ provision_debian_vagrant_guest(){
     install -o vagrant -g vagrant -m 0600 -T '/tmp/authorized_keys_vagrant' '/home/vagrant/.ssh/authorized_keys'
     rm '/tmp/authorized_keys_vagrant'
 
-    sed \
+    sed -i \
         -e 's|#PasswordAuthentication yes|PasswordAuthentication no|' \
         -e 's|#PermitEmptyPasswords no|PermitEmptyPasswords yes|' \
         '/etc/ssh/sshd_config'
