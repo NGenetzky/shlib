@@ -15,7 +15,7 @@ case $1 in
 		if is_off
 		then
 			tvservice -p
-			curr_vt=`fgconsole`
+			curr_vt=$(fgconsole)
 			if [ "$curr_vt" = "1" ]
 			then
 				chvt 2
