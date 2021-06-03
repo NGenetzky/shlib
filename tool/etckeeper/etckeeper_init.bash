@@ -24,7 +24,7 @@ etckeeper_init(){
     HOST="$(hostname -f)"
     git checkout -b "host/${HOST}"
 
-    if command -v etckeeper > /dev/null ; then
+    if ! command -v etckeeper > /dev/null ; then
         echo -e 'Etckeeper is not installed, skipping initial commit'
         return 0
     fi
