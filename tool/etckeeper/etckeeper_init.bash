@@ -2,7 +2,7 @@
 set -eu
 
 ETCKEEPER_DEST="${ETCKEEPER_DEST-/etc}"
-ETCKEEPER_REMOTE="${ETCKEEPER_REMOTE-https://github.com/NGenetzky/etckeeper-base-etc}"
+ETCKEEPER_REMOTE="${ETCKEEPER_REMOTE-https://github.com/vaddio-builder/etc.git}"
 ETCKEEPER_BRANCH_FROM="${ETCKEEPER_BRANCH_FROM-master}"
 ETCKEEPER_GROUP="${ETCKEEPER_GROUP-adm}"
 
