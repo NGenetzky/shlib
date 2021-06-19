@@ -30,6 +30,7 @@ rsync_yocto_mv_downloads(){
     \
     --exclude "*.done" \
     --exclude "git2_*tar.gz" \
+    --exclude "_bad-checksum_" \
     \
     --include "*.bin" \
     --include "*.run" \
