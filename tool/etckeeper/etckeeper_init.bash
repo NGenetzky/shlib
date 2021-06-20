@@ -33,8 +33,9 @@ etckeeper_init(){
     if ! command -v etckeeper > /dev/null ; then
         if command -v apt-get > /dev/null ; then
             apt-get install -y etckeeper
+        else
+            echo -e 'Etckeeper is not installed, skipping initial commit'
         fi
-        echo -e 'Etckeeper is not installed, skipping initial commit'
         return 0
     fi
     etckeeper commit -d "${ETCKEEPER_DEST}" -m 'etckeeper: Initial commit'
