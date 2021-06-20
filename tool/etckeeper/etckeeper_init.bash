@@ -16,6 +16,12 @@ etckeeper_init(){
         return 1
     fi
 
+    if ! command -v git > /dev/null ; then
+        if command -v apt-get > /dev/null ; then
+            apt-get install -y git
+        fi
+    fi
+
     cd "${ETCKEEPER_DEST}/"
     git init
     git remote add 'origin' "${ETCKEEPER_REMOTE}"
