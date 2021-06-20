@@ -2,7 +2,7 @@
 set -eu
 
 ETCKEEPER_DEST="${ETCKEEPER_DEST-/etc}"
-ETCKEEPER_REMOTE="${ETCKEEPER_REMOTE-https://github.com/vaddio-builder/etc.git}"
+ETCKEEPER_REMOTE="${ETCKEEPER_REMOTE-https://github.com/ngenetzky/etckeeper-base-etc.git}"
 ETCKEEPER_BRANCH_FROM="${ETCKEEPER_BRANCH_FROM-master}"
 ETCKEEPER_GROUP="${ETCKEEPER_GROUP-adm}"
 
@@ -31,6 +31,9 @@ etckeeper_init(){
     chmod -R g+wX "${ETCKEEPER_DEST}/.git/"
 
     if ! command -v etckeeper > /dev/null ; then
+        if command -v apt-get > /dev/null ; then
+            apt-get install -y etckeeper
+        fi
         echo -e 'Etckeeper is not installed, skipping initial commit'
         return 0
     fi
