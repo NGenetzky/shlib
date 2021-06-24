@@ -25,6 +25,7 @@ etckeeper_init(){
     HOST="$(hostname -f)"
     git checkout -b "host/${HOST}"
 
+    # ( cd /etc/ && sudo chgrp -R adm '.git/' && sudo chmod -R g+wX '.git/' && git config --add 'core.sharedRepository' 'true' )
     cd "${ETCKEEPER_DEST}/" || return 1
     git config --add 'core.sharedRepository' 'true'
     chgrp -R "${ETCKEEPER_GROUP}" "${ETCKEEPER_DEST}/.git/"
