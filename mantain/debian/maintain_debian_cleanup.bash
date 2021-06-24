@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# External code, don't care enough to fix this one.
+# shellcheck disable=SC2034
+
 # https://askubuntu.com/a/1161181
 function myclean {
     ## Show free space
@@ -14,7 +17,7 @@ function myclean {
     apt-get clean
 
     ## Remove old versions of snap packages
-    snap list --all | while read snapname ver rev trk pub notes; do
+    snap list --all | while read -r snapname ver rev trk pub notes; do
         if [[ $notes = *disabled* ]]; then
             snap remove "$snapname" --revision="$rev"
         fi
@@ -32,7 +35,7 @@ function myclean {
 
     ## Rotate and delete old logs
     /etc/cron.daily/logrotate
-    find /var/log -type f -iname *.gz -delete
+    find /var/log -type f -iname '*.gz' -delete
     journalctl --rotate
     journalctl --vacuum-time=1s
 
