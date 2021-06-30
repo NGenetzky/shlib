@@ -4,12 +4,11 @@ TMUX_GROUP='user'
 TMUX_OPTS=''
 TMUX_SESSION='user'
 TMUX_SHELL='/bin/bash'
-TMUX_CMD='tail -f /var/log/user.log'
+TMUX_CMD=''
 
 tmux_login_tty(){
     if ! tmux has-session -t "${TMUX_GROUP}" 2> /dev/null ; then
-            tmux new-session -d -s "${TMUX_GROUP}" -n "${TMUX_GROUP}" \
-                "${TMUX_CMD}"
+            tmux new-session -d -s "${TMUX_GROUP}" -n "${TMUX_GROUP}" ${TMUX_CMD}
     fi
 
     TMUX_TTY="$(tty)"
@@ -25,7 +24,7 @@ tmux_login_tty(){
 
     if ! tmux has-session -t "${TMUX_SESSION}" 2> /dev/null ; then
             tmux new-session -d -t "${TMUX_GROUP}" -s "${TMUX_SESSION}"
-            tmux new-window -n "${TMUX_SESSION}" "${TMUX_CMD}"
+            tmux new-window -n "${TMUX_SESSION}" ${TMUX_CMD}
     fi
 
     exec tmux -2 attach ${TMUX_OPTS} -t "${TMUX_SESSION}"
