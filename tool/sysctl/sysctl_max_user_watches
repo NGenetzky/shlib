@@ -1,0 +1,5 @@
+#!/bin/bash
+cat << EOF > /etc/sysctl.d/97-fs-inotify-max_user_watches.conf
+# Up to 540 MiB (1080 bytes per file watch)
+fs.inotify.max_user_watches=524288
+EOF
