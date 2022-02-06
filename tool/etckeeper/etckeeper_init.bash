@@ -7,15 +7,6 @@ ETCKEEPER_BRANCH_FROM="${ETCKEEPER_BRANCH_FROM-master}"
 ETCKEEPER_GROUP="${ETCKEEPER_GROUP-adm}"
 
 etckeeper_init(){
-    if [ -e "${ETCKEEPER_DEST}/.git/" ] ; then
-        echo -e 'Etckeeper is already initalized'
-        return 0
-    fi
-    if [ ! -w "${ETCKEEPER_DEST}/" ] ; then
-        echo -e 'Etckeeper can not be initalized'
-        return 1
-    fi
-
     if ! command -v git > /dev/null ; then
         if command -v apt-get > /dev/null ; then
             apt-get install -y git
@@ -23,18 +14,26 @@ etckeeper_init(){
     fi
 
     cd "${ETCKEEPER_DEST}/"
-    git init
-    git remote add 'origin' "${ETCKEEPER_REMOTE}"
-    git remote set-url --push 'origin' no_push
-    git pull -q 'origin' "${ETCKEEPER_BRANCH_FROM}"
 
-    HOST="$(hostname -f)"
-    git checkout -b "host/${HOST}"
+    if [ ! -w "${ETCKEEPER_DEST}/" ] ; then
+        echo -e 'Etckeeper can not be initalized'
+        return 1
+    fi
 
-    cd "${ETCKEEPER_DEST}/" || return 1
+    if [ ! -e "${ETCKEEPER_DEST}/.git/" ] ; then
+        git init
+        git remote add 'origin' "${ETCKEEPER_REMOTE}"
+        git remote set-url --push 'origin' no_push
+        git pull -q 'origin' "${ETCKEEPER_BRANCH_FROM}"
+
+        HOST="$(hostname -f)"
+        git checkout -b "host/${HOST}"
+    fi
+
     git config --add 'core.sharedRepository' 'true'
-    chgrp -R "${ETCKEEPER_GROUP}" "${ETCKEEPER_DEST}/.git/"
-    chmod -R g+wX "${ETCKEEPER_DEST}/.git/"
+    chgrp -R "${ETCKEEPER_GROUP}" "${ETCKEEPER_DEST}/.git"
+    chmod -R g+rwX "${ETCKEEPER_DEST}/.git"
+    chmod -R g+s "${ETCKEEPER_DEST}/.git"
 
     if ! command -v etckeeper > /dev/null ; then
         if command -v apt-get > /dev/null ; then
