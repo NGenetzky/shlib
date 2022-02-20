@@ -2,6 +2,7 @@
 apt-get --quiet --yes update \
     && apt-get -y install --no-install-recommends \
         apt-utils \
+        ca-certificates \
         dialog \
         git \
         sudo \

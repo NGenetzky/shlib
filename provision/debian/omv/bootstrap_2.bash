@@ -1,9 +1,14 @@
 #!/bin/bash
+set -eu
+
 export LANG=C.UTF-8
 export DEBIAN_FRONTEND=noninteractive
 export APT_LISTCHANGES_FRONTEND=none
-wget -O "/etc/apt/trusted.gpg.d/openmediavault-archive-keyring.asc" https://packages.openmediavault.org/public/archive.key
-apt-key add "/etc/apt/trusted.gpg.d/openmediavault-archive-keyring.asc"
+
+if [ ! -f "/etc/apt/trusted.gpg.d/openmediavault-archive-keyring.asc" ]; then
+    wget -O "/etc/apt/trusted.gpg.d/openmediavault-archive-keyring.asc" https://packages.openmediavault.org/public/archive.key
+    apt-key add "/etc/apt/trusted.gpg.d/openmediavault-archive-keyring.asc"
+fi
 apt-get update
 apt-get --yes --auto-remove --show-upgraded \
     --allow-downgrades --allow-change-held-packages \
