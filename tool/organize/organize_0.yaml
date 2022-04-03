@@ -1,0 +1,143 @@
+################################################################################
+# https://organize.readthedocs.io/en/latest/page/config.html
+# Variable substitution (placeholders)
+#
+# Placeholder variables are used with curly braces {var}. You always have access to the variables {path}, {basedir} and {relative_path}:
+#
+#     {path} – is the full path to the current file
+#     {basedir} – the current base folder (the base folder is the folder you specify in your configuration).
+#     {relative_path} – the relative path from {basedir} to {path}
+#
+# Use the dot notation to access properties of {path}, {basedir} and {relative_path}:
+#
+#     {path} – the full path to the current file
+#     {path.name} – the full filename including extension
+#     {path.stem} – just the file name without extension
+#     {path.suffix} – the file extension
+#     {path.parent} – the parent folder of the current file
+#     {path.parent.parent} – parent calls are chainable…
+#     {basedir} – the full path to the current base folder
+#     {basedir.parent} – the full path to the base folder’s parent
+#
+################################################################################
+
+private_folders: &private
+  - "/path/private"
+  - "~/path/private"
+
+work_folders: &work
+  - "/path/work"
+  - "~/My work folder"
+
+all_folders: &all
+  - *private
+  - *work
+
+################################################################################
+#rules
+################################################################################
+
+.rule_templates:
+  - folders:
+      - ~/.config/organize/
+    filters:
+      - regex: '^RG(\d{12})-sig\.pdf$'
+      - extension:
+          - yml
+          - yaml
+    actions:
+      - echo: "base {basedir}, path {path}, relative: {relative_path}"
+
+    optional settings:
+    enabled: true # default = true
+    subfolders: true # default = false
+    system_files: false # default = false
+
+  ############################################################################
+  # WIP
+  ############################################################################
+.rules__WIP: &rules_WIP
+
+  # Backup sqlite databases from config
+  - enabled: true
+    folders:
+      - ~/.config/joplin-desktop/resources/
+    filters:
+      - extension:
+          - pdf
+          - ics
+          # - png # Too many from webclipper I imagine
+      - created:
+          days: 1
+    actions:
+      - echo: "base {basedir}, path {path}, relative: {relative_path}"
+      # - copy:
+      #     dest: "~/workspace/explore-organize/Documents/joplin-resources/{relative_path}"
+      #     overwrite: true
+      # - copy:
+      #     dest: "~/workspace/explore-organize/Documents/joplin-resources/{relative_path.stem}/document.{extension.lower}"
+      #     overwrite: true
+      # - python: |
+      #     import os.path
+      #     import yaml
+      #     BASE = '~/workspace/explore-organize/Documents'
+      #     filename = '{}/joplin-resources/{}/info.yml'.format(BASE, relative_path.stem)
+      #     data = dict(
+      #         A = 'a',
+      #         B = dict(
+      #             C = 'c',
+      #             D = 'd',
+      #             E = 'e',
+      #         )
+      #     )
+      #     with open(os.path.expanduser(filename), 'w') as outfile:
+      #         yaml.dump(data, outfile, default_flow_style=False)
+
+
+  ############################################################################
+  # good
+  ############################################################################
+.rules__good: &rules_good
+  # Config
+  - enabled: true
+    folders:
+      - ~/.config/organize/
+    filters:
+      - extension:
+          - yml
+          - yaml
+    actions:
+      - echo: "base {basedir}, path {path}, relative: {relative_path}"
+      # - copy:
+      #     dest: ~/workspace/explore-organize/config/organize/
+      #     overwrite: true
+
+  # Backup sqlite databases from config
+  - enabled: false
+    subfolders: true
+    folders:
+      - ~/.config/
+    filters:
+      - extensJion:
+          - sqlite
+    actions:
+      - echo: "base {basedir}, path {path}, relative: {relative_path}"
+      # - copy: ~/workspace/explore-organize/config/{relative_path}
+      # - shell: 'sqlite3 "{path}" .dump > ~/workspace/explore-organize/config/{relative_path}.sql'
+
+  # move incomplete downloads older > 30 days into the trash
+  - enabled: false
+    folders:
+      - ~/Downloads
+    filters:
+      - extension:
+          - crdownload
+          - part
+          - download
+      - lastmodified:
+          days: 30
+    actions:
+      - trash
+
+# rules: *rules_WIP
+rules: *rules_good
