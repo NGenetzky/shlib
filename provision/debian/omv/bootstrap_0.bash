@@ -6,6 +6,7 @@ apt-get --quiet --yes update \
         dialog \
         git \
         sudo \
+        wget \
     && git config --system \
         user.name 'Nathan Genetzky' \
     && git config --system \
