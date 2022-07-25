@@ -7,6 +7,6 @@ source "${SCRIPTDIR}/_download.bash"
 # Bash Strict Mode
 set -eu -o pipefail
 
-wget_download_dpkg_install  \
-    'https://www.dropbox.com/download?dl=packages/ubuntu/dropbox_2019.02.14_amd64.deb' \
-	'dropbox_2019.02.14_amd64.deb'
+_FILE="dropbox_2020.03.04_amd64.deb"
+_URL="https://www.dropbox.com/download?dl=packages/ubuntu/${_FILE}"
+wget_download_dpkg_install "${_URL}" "${_FILE}"
